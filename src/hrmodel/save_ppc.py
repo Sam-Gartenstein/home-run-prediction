@@ -1,4 +1,3 @@
-
 import os
 from pathlib import Path
 
@@ -49,27 +48,4 @@ def sample_ppc_and_save(model,
     az.to_netcdf(updated, path)
 
     return updated, path, run_dir
-
-def load_idata_and_preds(nc_path, var_name="y_obs"):
-    """
-    Load an ArviZ NetCDF and return:
-      (idata, y_true: 1D int array, pred_prob: 1D float array)
-    where pred_prob = mean over chain/draw of posterior_predictive[var_name].
-    """
-    idata = az.from_netcdf(Path(nc_path))
-
-    if var_name not in idata.observed_data:
-        raise KeyError(f"'{var_name}' not found in observed_data.")
-
-    # Observed labels
-    y = idata.observed_data[var_name].values
-    y_true = np.asarray(y, dtype=int).reshape(-1)
-
-    # Posterior predictive mean P(y=1)
-    pp = idata.posterior_predictive[var_name]
-    reduce_dims = [d for d in ("chain", "draw") if d in pp.dims]
-    p = pp.mean(dim=reduce_dims).values
-    pred_prob = np.asarray(p, dtype=float).reshape(-1)
-
-    return idata, y_true, pred_prob
 
