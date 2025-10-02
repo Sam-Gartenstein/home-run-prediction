@@ -1,0 +1,14 @@
+variant: noprev
+shared_run_id: 2025-10-02_01
+feature_map:
+  rolling_batter_barrel_rate: beta_batter_barrel
+  rolling_pitcher_barrel_rate: beta_pitcher_barrel
+  hand_num: beta_pitcher_hand
+priors_fixed: {}
+sampler:
+  draws: 1000
+  tune: 1000
+  chains: 4
+  target_accept: 0.95
+  random_seed: 42
+notes: Variant without beta_prev_hr for ablation.

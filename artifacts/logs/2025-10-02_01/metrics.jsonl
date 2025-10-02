@@ -1,0 +1,4 @@
+{"event": "start", "run_id": "2025-10-02_01", "started_at": "2025-10-02T14:01:22.831615Z", "ended_at": null}
+{"event": "idata", "path": "artifacts/models/full/2025-10-02_01/idata.nc", "sha256": "f0855e4f4e14c761c093f2962ca58cfb78e1daf3a70f6bdd80ad95d6e597bac1"}
+{"event": "end", "run_id": "2025-10-02_01", "started_at": "2025-10-02T14:01:22.831615Z", "ended_at": "2025-10-02T14:03:16.998603Z"}
+{"event": "idata", "path": "artifacts/models/noprev/2025-10-02_01/idata.nc", "sha256": "6509a5263b89fbac2cab1c503248245f6e01a318d4b4eff84f5f2c069c1e7782"}
