@@ -7,8 +7,6 @@
 # ------------------------------------------------------------------------------
 # Artifacts: keep the folder structure but ignore heavy binaries
 # ------------------------------------------------------------------------------
-# Track the entire artifacts tree so subfolders exist in Git
-artifacts/**
 
 # Ignore large/binary run outputs inside artifacts
 artifacts/**/*.nc
