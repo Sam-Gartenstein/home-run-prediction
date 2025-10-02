@@ -1,21 +1,28 @@
-.ipynb_checkpoints/
+# ------------------------------------------------------------------------------
+# Jupyter / notebooks
+# ------------------------------------------------------------------------------
+# Ignore auto-saved notebook checkpoints everywhere
 **/.ipynb_checkpoints/
 
-# Keep the artifacts folder structure…
+# ------------------------------------------------------------------------------
+# Artifacts: keep the folder structure but ignore heavy binaries
+# ------------------------------------------------------------------------------
+# Track the entire artifacts tree so subfolders exist in Git
 artifacts/**
 
-# …but ignore heavy binary artifacts inside it
+# Ignore large/binary run outputs inside artifacts
 artifacts/**/*.nc
 artifacts/**/*.h5
 artifacts/**/*.npz
 artifacts/**/*.pkl
 
-# Re-include the lightweight run metadata
+# Re-include human-readable / lightweight files for experiment traceability
+!artifacts/**/*.csv
 !artifacts/**/config.yaml
 !artifacts/**/config.json
 !artifacts/**/metrics.jsonl
 !artifacts/**/events.log
 !artifacts/**/notes.md
 
-# (optional) if you save tiny CSVs you want in git:
-# !artifacts/**/*.csv
+# Keep placeholder directories (use an empty .gitkeep file)
+!artifacts/**/.gitkeep
