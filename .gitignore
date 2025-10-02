@@ -1,2 +1,21 @@
 .ipynb_checkpoints/
 **/.ipynb_checkpoints/
+
+# Keep the artifacts folder structure…
+artifacts/**
+
+# …but ignore heavy binary artifacts inside it
+artifacts/**/*.nc
+artifacts/**/*.h5
+artifacts/**/*.npz
+artifacts/**/*.pkl
+
+# Re-include the lightweight run metadata
+!artifacts/**/config.yaml
+!artifacts/**/config.json
+!artifacts/**/metrics.jsonl
+!artifacts/**/events.log
+!artifacts/**/notes.md
+
+# (optional) if you save tiny CSVs you want in git:
+# !artifacts/**/*.csv
