@@ -1,1 +1,18 @@
 2025-10-04 14:05:27,632 INFO - run finished
+2025-10-04 21:26:51,716 INFO - full: posterior summary saved → artifacts/logs/2025-10-04_02/full/posterior_summary.csv
+2025-10-04 21:30:36,306 INFO - full: posterior summary saved → artifacts/logs/2025-10-04_02/full/posterior_summary.csv
+2025-10-04 21:39:25,693 INFO - noprev: posterior summary saved → artifacts/logs/2025-10-04_02/noprev/posterior_summary.csv
+2025-10-07 19:24:01,718 INFO - full: posterior summary saved → artifacts/logs/2025-10-04_02/full/posterior_summary.csv
+2025-10-07 19:24:03,671 INFO - noprev: posterior summary saved → artifacts/logs/2025-10-04_02/noprev/posterior_summary.csv
+2025-10-07 19:24:15,656 INFO - comparison (loo) saved → artifacts/logs/2025-10-04_02/comparison/comparison_loo.csv
+2025-10-07 19:39:18,898 INFO - full: posterior summary saved → artifacts/logs/2025-10-04_02/full/posterior_summary.csv
+2025-10-07 19:39:19,833 INFO - noprev: posterior summary saved → artifacts/logs/2025-10-04_02/noprev/posterior_summary.csv
+2025-10-07 19:39:44,471 INFO - comparison (loo) saved → artifacts/logs/2025-10-04_02/comparison/comparison_loo.csv
+2025-10-09 11:02:41,808 INFO - full: posterior summary saved → artifacts/logs/2025-10-04_02/full/posterior_summary.csv
+2025-10-09 11:02:42,869 INFO - noprev: posterior summary saved → artifacts/logs/2025-10-04_02/noprev/posterior_summary.csv
+2025-10-09 11:03:00,297 INFO - comparison (loo) saved → artifacts/logs/2025-10-04_02/comparison/comparison_loo.csv
+2025-10-09 11:20:20,447 INFO - full: posterior summary saved → artifacts/logs/2025-10-04_02/full/posterior_summary.csv
+2025-10-09 11:20:21,308 INFO - noprev: posterior summary saved → artifacts/logs/2025-10-04_02/noprev/posterior_summary.csv
+2025-10-09 11:20:37,406 INFO - comparison (loo) saved → artifacts/logs/2025-10-04_02/comparison/comparison_loo.csv
+2025-10-09 11:31:24,833 INFO - full: posterior summary saved → artifacts/logs/2025-10-04_02/full/posterior_summary.csv
+2025-10-09 11:31:25,986 INFO - noprev: posterior summary saved → artifacts/logs/2025-10-04_02/noprev/posterior_summary.csv
