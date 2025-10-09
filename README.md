@@ -40,8 +40,3 @@ This project estimates the probability of a home run occurring during a given ML
 ```
 
 -----
-
-## Internal To-DO:
-
--Figure out how to add distributions to config.yaml
--Add code/functions to create csv files saving posterior summaries, elpd comparisons, and accuracy metrics
