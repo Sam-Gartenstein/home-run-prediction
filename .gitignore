@@ -24,3 +24,10 @@ artifacts/**/*.pkl
 
 # Keep placeholder directories (use an empty .gitkeep file)
 !artifacts/**/.gitkeep
+
+# ------------------------------------------------------------------------------
+# Local data (do not track raw CSVs)
+# ------------------------------------------------------------------------------
+
+data/**/*.csv
+!data/.gitkeep
