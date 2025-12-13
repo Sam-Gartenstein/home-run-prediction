@@ -9,5 +9,4 @@ Workflow explaination
 **TO-DO**:
 
 - Create a better README opening description
-- Remove 2024 and 2025 Preprocessing
 - Continue to enhance the orgainzation of the newer notebooks for better readiability
