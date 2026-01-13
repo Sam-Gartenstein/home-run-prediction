@@ -31,3 +31,7 @@ artifacts/**/*.pkl
 
 data/**/*.csv
 !data/.gitkeep
+
+__pycache__/
+*.py[cod]
+
