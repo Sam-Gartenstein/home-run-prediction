@@ -473,4 +473,134 @@ def collect_pitchers_for_season(dh_df: pd.DataFrame, sleep_s: float = 1.5) -> pd
 
     return pd.DataFrame(out_rows)
 
+####################################### Pitcher Procressing ########################################
+
+def explode_pitchers_long(
+    df: pd.DataFrame,
+    away_col: str = "away_pitchers",
+    home_col: str = "home_pitchers",
+    pitcher_col: str = "pitcher",
+    side_col: str = "side",
+    side_labels: tuple[str, str] = ("away", "home"),
+    drop_empty: bool = False,   # default: keep everything (use NA for missing)
+    sort_output: bool = True,   # sort by date/game_number/side
+    date_col: str = "date",
+    game_number_col: str = "game_number",
+) -> pd.DataFrame:
+    """
+    Convert game-level pitcher lists (or comma-separated strings) into long format:
+    one pitcher per row + an indicator for away/home, with all other columns repeated.
+
+    - Supports list/tuple cells (your current format) and comma-separated strings.
+    - If drop_empty=False, missing pitcher lists become one row with pitcher=<NA>.
+    - Sorting (optional): date, game_number, then side (away then home).
+    """
+
+    def split_pitchers(s):
+        # If it's already a list/tuple, clean it directly (avoid pd.isna on lists)
+        if isinstance(s, (list, tuple)):
+            lst = [str(p).strip() for p in s if p is not None and str(p).strip() != ""]
+            return lst if lst else ([] if drop_empty else [pd.NA])
+
+        # Scalar missing
+        if s is None or (isinstance(s, float) and pd.isna(s)):
+            return [] if drop_empty else [pd.NA]
+
+        s_str = str(s).strip()
+        if s_str == "":
+            return [] if drop_empty else [pd.NA]
+
+        # Fallback: comma-separated string
+        lst = [p.strip() for p in s_str.split(",") if p.strip()]
+        return lst if lst else ([] if drop_empty else [pd.NA])
+
+    game_cols = [c for c in df.columns if c not in [away_col, home_col]]
+
+    away_long = (
+        df[game_cols + [away_col]]
+        .assign(**{
+            side_col: side_labels[0],
+            pitcher_col: lambda d: d[away_col].map(split_pitchers)
+        })
+        .drop(columns=[away_col])
+        .explode(pitcher_col)
+    )
+
+    home_long = (
+        df[game_cols + [home_col]]
+        .assign(**{
+            side_col: side_labels[1],
+            pitcher_col: lambda d: d[home_col].map(split_pitchers)
+        })
+        .drop(columns=[home_col])
+        .explode(pitcher_col)
+    )
+
+    out = pd.concat([away_long, home_long], ignore_index=True)
+
+    if drop_empty:
+        out[pitcher_col] = out[pitcher_col].astype("string")
+        out = out.dropna(subset=[pitcher_col])
+        out = out[out[pitcher_col].str.strip() != ""]
+
+    if sort_output:
+        side_order = {side_labels[0]: 0, side_labels[1]: 1}
+        out["_side_order"] = out[side_col].map(side_order)
+
+        sort_cols = []
+        if date_col in out.columns:
+            sort_cols.append(date_col)
+        if game_number_col in out.columns:
+            sort_cols.append(game_number_col)
+        sort_cols.append("_side_order")
+
+        out = out.sort_values(sort_cols, kind="mergesort").drop(columns=["_side_order"])
+
+    return out.reset_index(drop=True)
+
+
+def first_last_to_last_first(name):
+    if pd.isna(name):
+        return name
+    s = str(name).strip()
+    if s == "" or s.lower() == "nan":
+        return pd.NA
+    parts = s.split()
+    if len(parts) == 1:
+        return s  # e.g., "Cher" (rare, but safe)
+    last = parts[-1]
+    first = " ".join(parts[:-1])
+    return f"{last}, {first}"
+
+
+def add_game_id(df):
+    df = df.copy()
+
+    # YYYYMMDD
+    df["game_date_temp"] = pd.to_datetime(df["date"]).dt.strftime("%Y%m%d")
+
+    # clean pitcher name:
+    # - remove commas
+    # - collapse whitespace
+    # - replace spaces with underscores
+    df["pitcher_id"] = (
+        df["pitcher"]
+        .astype(str)
+        .str.replace(",", "", regex=False)
+        .str.strip()
+        .str.replace(r"\s+", "_", regex=True)
+    )
+
+    df["game_id"] = (
+        df["game_date_temp"]
+        + "_"
+        + df["away_team"].astype(str)
+        + "@"
+        + df["home_team"].astype(str)
+        + "_"
+        + df["pitcher_id"]
+    )
+
+    return df.drop(columns=["game_date_temp", "pitcher_id"])
+
 
