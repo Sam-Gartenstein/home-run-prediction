@@ -155,27 +155,17 @@ def replace_away_home_with_abbr(df: pd.DataFrame, teams_col: str = "TEAMS") -> p
 #########################################################################################
 
 
-def expand_double_headers(df):
+def expand_double_headers(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Take a double-header DataFrame (with GAME 1 / GAME 2 columns)
-    and return a long DataFrame with one row per game.
+    Take a double-header DataFrame (with GAME 1 / GAME 2 columns) and return a long
+    DataFrame with one row per game, sorted consistently by:
+    DATE, away_team, home_team, game_number.
 
-    Columns required:
-      - 'DATE'
-      - 'TEAMS'
-      - 'away_team'
-      - 'home_team'
-      - 'GAME 1'
-      - 'GAME 2'
+    Required columns:
+      - DATE, TEAMS, away_team, home_team, GAME 1, GAME 2
 
     Output columns include:
-      - DATE
-      - TEAMS
-      - away_team
-      - home_team
-      - game_label   (GAME 1 / GAME 2)
-      - raw_result   (e.g., 'BOS,\\n5-4')
-      - game_number  (1 or 2)
+      - DATE, TEAMS, away_team, home_team, game_label, raw_result, game_number
     """
     required_cols = ["DATE", "TEAMS", "away_team", "home_team", "GAME 1", "GAME 2"]
     missing = [c for c in required_cols if c not in df.columns]
@@ -186,30 +176,22 @@ def expand_double_headers(df):
         id_vars=["DATE", "TEAMS", "away_team", "home_team"],
         value_vars=["GAME 1", "GAME 2"],
         var_name="game_label",
-        value_name="raw_result"
+        value_name="raw_result",
     )
+
+    # Ensure DATE is datetime (matches sort_doubleheaders behavior)
+    long_df["DATE"] = pd.to_datetime(long_df["DATE"])
 
     # Extract game number: "GAME 1" -> 1, "GAME 2" -> 2
     long_df["game_number"] = long_df["game_label"].str.extract(r"(\d+)").astype(int)
 
-    # Sort by date then game number
+    # Sort like sort_doubleheaders, but keep Game 1 before Game 2 within matchup/day
     long_df = (
-        long_df
-        .sort_values(["DATE", "game_number"])
-        .reset_index(drop=True)
+        long_df.sort_values(["DATE", "away_team", "home_team", "game_number"])
+              .reset_index(drop=True)
     )
 
     return long_df
-
-
-def sort_doubleheaders(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Sort a doubleheader dataframe so the two games for each matchup/day are adjacent
-    and in consistent order (using gamePk as the tie-breaker).
-    """
-    out = df.copy()
-    out["DATE"] = pd.to_datetime(out["DATE"])
-    return out.sort_values(["DATE", "away_team", "home_team"]).reset_index(drop=True)
 
 
 def build_team_name_to_abbrev_map(df: pd.DataFrame, teams_col: str = "TEAMS") -> dict:
