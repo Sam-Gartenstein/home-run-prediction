@@ -1,4 +1,3 @@
-
 from pybaseball import playerid_reverse_lookup
 import pandas as pd
 
@@ -66,43 +65,7 @@ def add_batter_full_name(
 
     return df
 
-def prepare_barrels(
-    df: pd.DataFrame,
-    barrel_col: str = "launch_speed_angle",
-) -> pd.DataFrame:
-    """
-    Prepare an at-bat–level DataFrame by:
-      1) Sorting by batter and game context,
-      2) Keeping only the final pitch of each at-bat,
-      3) Creating a 'barrel' indicator column (1 if barrel_col == 6, else 0).
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Input Statcast DataFrame at the pitch level.
-    barrel_col : str, default 'launch_speed_angle'
-        Column used to determine if a pitch is a barrel.
-
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame with one row per at-bat and a 'barrel' indicator.
-    """
-    # Sort for correct sequence
-    df = df.sort_values(
-        by=["batter_name", "game_date", "inning", "at_bat_number"]
-    )
-
-    # Keep only the final pitch of each at-bat
-    df = (
-        df.groupby(["game_date", "at_bat_number", "batter_name"], as_index=False)
-          .tail(1)
-    )
-
-    # Create 'barrel' indicator
-    df["barrel"] = (df[barrel_col] == 6).fillna(False).astype(int)
-
-    return df
+### ADD prepare_barrels here
 
 def get_latest_batter_pitcher_data(df, batters=None, pitchers=None, window=40):
     """
