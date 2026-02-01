@@ -1,4 +1,4 @@
-from .game_preprocessing import add_batter_names, add_batter_full_name, prepare_barrels, get_latest_batter_pitcher_data
+from .game_preprocessing import add_batter_names, add_batter_full_name, get_latest_batter_pitcher_data
 from .model import remove_fixed_effects, build_and_sample_hr_model
 from .save_ppc import sample_ppc_and_save
 from .diagnostics import plot_trace_summary, summarize_posterior
@@ -8,7 +8,6 @@ from .prediction import posterior_hr_prob, plot_hr_prob
 __all__ = [
     "add_batter_names",
     "add_batter_full_name",
-    "prepare_barrels",
     "get_latest_batter_pitcher_data",
     "remove_fixed_effects"
     "build_and_sample_hr_model",
